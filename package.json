@@ -1,0 +1,15 @@
+{
+  "name": "simple-expression",
+  "version": "1.0.0",
+  "description": "evaluates expressions",
+  "main": "dist/src/index",
+  "types": "dist/src/index",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^12.7.5",
+  }
+}
