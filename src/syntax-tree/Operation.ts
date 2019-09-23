@@ -1,5 +1,5 @@
 import { Expression, IEvalResult } from './Expression';
-export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',';
+export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==';
 export class Operation extends Expression {
     static functions: { leftType: string, rightType: string, operator: Operator, eval: (leftResult: any, rightResult: any) => IEvalResult }[] = [];
     constructor(
@@ -15,7 +15,7 @@ export class Operation extends Expression {
         const left = leftResult.value;
         let right = rightResult.value;
         const fn = Operation.functions.find(x => x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === this.operator);
-        if (!fn) throw new Error(`No function found for operator '${this.operator}' for types '${leftResult.type}x${rightResult.type}'`);
+        if (!fn) throw new Error(`No function found for operator '${this.operator}' for types '${leftResult.type}'X'${rightResult.type}'`);
         const result = fn.eval(left, right);
         return {
             type: result.type,
