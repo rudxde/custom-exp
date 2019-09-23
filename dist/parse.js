@@ -158,7 +158,7 @@ function tryParseOperator(index, tokens) {
         return FAIL;
     var overNextToken = tokens[index].content;
     var singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ',', '=='];
-    var dualTokenOperators = ['&&', '||'];
+    var dualTokenOperators = ['&&', '||', '!='];
     if (singleTokenOperators.includes(nextToken))
         return { increasedIndex: index, result: nextToken };
     if (dualTokenOperators.includes(nextToken + overNextToken))

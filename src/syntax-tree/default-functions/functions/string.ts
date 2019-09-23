@@ -4,8 +4,9 @@ import { Parameter } from '../../Parameter';
 Function.functions.push({
     name: 'toString',
     scopeType: 'string',
-    eval: (scope: string, parameters: Parameter[]) => ({value:  scope, type: 'string'}),
+    eval: (scope: string, parameters: Parameter[]) => ({ value: scope, type: 'string' }),
 });
+
 Function.functions.push({
     name: 'repeat',
     scopeType: 'string',
@@ -18,6 +19,7 @@ Function.functions.push({
         };
     },
 });
+
 Function.functions.push({
     name: 'charAt',
     scopeType: 'string',
@@ -30,6 +32,7 @@ Function.functions.push({
         };
     },
 });
+
 Function.functions.push({
     name: 'subString',
     scopeType: 'string',
@@ -55,6 +58,7 @@ Function.functions.push({
         };
     },
 });
+
 Function.functions.push({
     name: 'toUpperCase',
     scopeType: 'string',
@@ -65,6 +69,29 @@ Function.functions.push({
         };
     },
 });
+
+Function.functions.push({
+    name: 'isEmpty',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'boolean',
+            value: !Boolean(scope),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'isNotEmpty',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'boolean',
+            value: Boolean(scope),
+        };
+    },
+});
+
 Function.functions.push({
     name: 'parseInt',
     scopeType: 'string',
@@ -75,3 +102,134 @@ Function.functions.push({
         };
     },
 });
+
+Function.functions.push({
+    name: 'length',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'number',
+            value: scope.length,
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'charCodeAt',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const index = Parameter.getParam(parameters, 0, 'index', 'number');
+        return {
+            type: 'number',
+            value: scope.charCodeAt(index.value),
+        };
+    },
+});
+
+
+Function.functions.push({
+    name: 'concat',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const strings = Parameter.getParam(parameters, 0, 'strings', 'array');
+        return {
+            type: 'string',
+            value: scope.concat(...strings.value),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'replace',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const find = Parameter.getParam(parameters, 0, 'find', 'string');
+        const replace = Parameter.getParam(parameters, 0, 'replace', 'string');
+        return {
+            type: 'string',
+            value: scope.replace(find.value, replace.value),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'indexOf',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const find = Parameter.getParam(parameters, 0, 'find', 'string');
+        return {
+            type: 'number',
+            value: scope.indexOf(find.value),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'endsWith',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const find = Parameter.getParam(parameters, 0, 'find', 'string');
+        return {
+            type: 'boolean',
+            value: scope.endsWith(find.value),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'startsWith',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const find = Parameter.getParam(parameters, 0, 'find', 'string');
+        return {
+            type: 'boolean',
+            value: scope.startsWith(find.value),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'trim',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'string',
+            value: scope.trim(),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'trimLeft',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'string',
+            value: scope.trimLeft(),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'trimRight',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        return {
+            type: 'string',
+            value: scope.trimRight(),
+        };
+    },
+});
+
+Function.functions.push({
+    name: 'split',
+    scopeType: 'string',
+    eval: (scope: string, parameters: Parameter[]) => {
+        const separator = Parameter.getParam(parameters, 0, 'separator', 'string');
+        return {
+            type: 'array',
+            value: scope.split(separator.value),
+        };
+    },
+});
+

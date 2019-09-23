@@ -34,6 +34,18 @@ Operation_1.Operation.functions.push({
 Operation_1.Operation.functions.push({
     leftType: 'number',
     rightType: 'number',
+    operator: '==',
+    eval: function (left, right) { return ({ type: 'boolean', value: left === right }); },
+});
+Operation_1.Operation.functions.push({
+    leftType: 'number',
+    rightType: 'number',
+    operator: '!=',
+    eval: function (left, right) { return ({ type: 'boolean', value: left !== right }); },
+});
+Operation_1.Operation.functions.push({
+    leftType: 'number',
+    rightType: 'number',
     operator: '<',
     eval: function (left, right) { return ({ type: 'boolean', value: left < right }); },
 });

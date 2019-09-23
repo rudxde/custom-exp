@@ -35,3 +35,16 @@ Operation.functions.push({
         return { type: 'boolean', value: (left && !right) || (!left && right) };
     },
 });
+
+Operation.functions.push({
+    leftType: 'boolean',
+    rightType: 'boolean',
+    operator: '==',
+    eval: (left, right) => ({ type: 'boolean', value: left === right }),
+});
+Operation.functions.push({
+    leftType: 'boolean',
+    rightType: 'boolean',
+    operator: '!=',
+    eval: (left, right) => ({ type: 'boolean', value: left !== right }),
+});

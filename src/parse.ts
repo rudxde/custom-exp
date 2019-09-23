@@ -143,7 +143,7 @@ function tryParseOperator(index: number, tokens: Tokens): canFail<Operator> {
     if (index >= tokens.length) return FAIL;
     const overNextToken = tokens[index].content;
     const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ',', '=='];
-    const dualTokenOperators = ['&&', '||'];
+    const dualTokenOperators = ['&&', '||', '!='];
     if (singleTokenOperators.includes(nextToken)) return { increasedIndex: index, result: <Operator>nextToken };
     if (dualTokenOperators.includes(nextToken + overNextToken)) return { increasedIndex: index + 1, result: <Operator>(nextToken + overNextToken) };
     return FAIL;

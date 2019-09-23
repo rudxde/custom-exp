@@ -1,5 +1,5 @@
 import { Expression, IEvalResult } from './Expression';
-export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==';
+export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==' | '!=';
 export class Operation extends Expression {
     static functions: { leftType: string, rightType: string, operator: Operator, eval: (leftResult: any, rightResult: any) => IEvalResult }[] = [];
     constructor(
