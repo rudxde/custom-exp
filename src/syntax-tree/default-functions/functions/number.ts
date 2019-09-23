@@ -1,18 +1,20 @@
-import { Function } from '../../Function';
 import { Parameter } from '../../Parameter';
+import { Functionality } from '../../../functionality';
+export function addDefaults(functionality: Functionality): void {
 
-Function.functions.push({
+functionality.addFunctions({
     name: 'round',
     scopeType: 'number',
     eval: (scope: number, parameters: Parameter[]) => ({ type: 'number', value: Math.round(scope) }),
 });
-Function.functions.push({
+functionality.addFunctions({
     name: 'toString',
     scopeType: 'number',
     eval: (scope: number, parameters: Parameter[]) => ({ type: 'string', value: String(scope) }),
 });
-Function.functions.push({
+functionality.addFunctions({
     name: 'sqrt',
     scopeType: 'number',
     eval: (scope: number, parameters: Parameter[]) => ({ type: 'number', value: Math.sqrt(scope) }),
 });
+}

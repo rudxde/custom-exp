@@ -1,9 +1,11 @@
+import { Functionality } from '../functionality';
+
 export abstract class Expression {
     constructor(
 
     ) { }
 
-    abstract eval(): IEvalResult;
+    abstract eval(functionality: Functionality): IEvalResult;
 }
 
 export interface IEvalResult {

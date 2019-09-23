@@ -1,7 +1,7 @@
 import { Expression, IEvalResult } from './Expression';
+import { Functionality } from '../functionality';
 export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==' | '!=';
 export class Operation extends Expression {
-    static functions: { leftType: string, rightType: string, operator: Operator, eval: (leftResult: any, rightResult: any) => IEvalResult }[] = [];
     constructor(
         public left: Expression,
         public right: Expression,
@@ -9,12 +9,12 @@ export class Operation extends Expression {
     ) {
         super();
     }
-    eval(): IEvalResult {
-        const leftResult = this.left.eval();
-        const rightResult = this.right.eval();
+    eval(functionality: Functionality): IEvalResult {
+        const leftResult = this.left.eval(functionality);
+        const rightResult = this.right.eval(functionality);
         const left = leftResult.value;
         let right = rightResult.value;
-        const fn = Operation.functions.find(x => x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === this.operator);
+        const fn = functionality.operations.find(x => x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === this.operator);
         if (!fn) throw new Error(`No function found for operator '${this.operator}' for types '${leftResult.type}'X'${rightResult.type}'`);
         const result = fn.eval(left, right);
         return {

@@ -1,4 +1,5 @@
 import { Expression, IEvalResult } from './Expression';
+import { Functionality } from '../functionality';
 
 export class Array extends Expression {
     constructor(
@@ -6,10 +7,10 @@ export class Array extends Expression {
     ) {
         super();
     }
-    eval(): IEvalResult {
+    eval(functionality: Functionality): IEvalResult {
         return {
             type: 'array',
-            value: this.expressions.map(x => x.eval())
+            value: this.expressions.map(x => x.eval(functionality))
         };
     }
 }

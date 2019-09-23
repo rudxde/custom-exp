@@ -1,9 +1,8 @@
 import { Expression, IEvalResult } from './Expression';
 import { Parameter } from './Parameter';
+import { Functionality } from '../functionality';
 
 export class Function extends Expression {
-
-    static functions: { name: string, scopeType: string, eval: (scopeResult: any, parameters: Parameter[]) => IEvalResult }[] = [];
 
     constructor(
         public scope: Expression,
@@ -12,9 +11,9 @@ export class Function extends Expression {
     ) {
         super();
     }
-    eval(): IEvalResult {
-        const scopeResult = this.scope.eval();
-        const fn = Function.functions.find(x => x.name === this.name && x.scopeType === scopeResult.type);
+    eval(functionality: Functionality): IEvalResult {
+        const scopeResult = this.scope.eval(functionality);
+        const fn = functionality.functions.find(x => x.name === this.name && x.scopeType === scopeResult.type);
         if (!fn) throw new Error(`Function ${this.name} not found for type ${scopeResult.type}`);
         const result = fn.eval(scopeResult.value, this.parameter);
         return {

@@ -1,4 +1,5 @@
 import { Expression, IEvalResult } from './Expression';
+import { Functionality } from '../functionality';
 
 export class Condition extends Expression {
 
@@ -9,16 +10,16 @@ export class Condition extends Expression {
     ) {
         super();
     }
-    eval(): IEvalResult {
-        const evalConditionResult = this.condition.eval();
+    eval(functionality: Functionality): IEvalResult {
+        const evalConditionResult = this.condition.eval(functionality);
         let result: boolean = evalConditionResult.value;
         if (evalConditionResult.type !== 'boolean') {
             result = Boolean(evalConditionResult.value);
         }
         if (result) {
-            return this.thenEx.eval();
+            return this.thenEx.eval(functionality);
         } else {
-            return this.elseEx.eval();
+            return this.elseEx.eval(functionality);
         }
     }
 }
