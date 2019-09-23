@@ -2,8 +2,8 @@
   "name": "simple-expression",
   "version": "1.0.0",
   "description": "evaluates expressions",
-  "main": "dist/src/index",
-  "types": "dist/src/index",
+  "main": "dist/index",
+  "types": "dist/index",
   "scripts": {
     "build": "tsc -p ."
   },

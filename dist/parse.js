@@ -7,6 +7,7 @@ var Operation_1 = require("./syntax-tree/Operation");
 var Noop_1 = require("./syntax-tree/Noop");
 var constant_1 = require("./syntax-tree/constant");
 var array_1 = require("./syntax-tree/array");
+var condition_1 = require("./syntax-tree/condition");
 var FAIL = null;
 function expectToken(token, expectedContent) {
     return token.content === expectedContent;
@@ -15,6 +16,12 @@ function expectTokenType(token, expectedType) {
     return token.type === expectedType;
 }
 function tryParseSimpleExpression(index, tokens) {
+    var braceExpressionResult = tryParseBraceExpression(index, tokens);
+    if (braceExpressionResult != FAIL)
+        return braceExpressionResult;
+    var arrayExpression = tryParseArray(index, tokens);
+    if (arrayExpression != FAIL)
+        return arrayExpression;
     var booleanResult = tryParseBoolean(index, tokens);
     if (booleanResult !== FAIL)
         return booleanResult;
@@ -133,7 +140,7 @@ function tryParseOperation(left, index, tokens) {
         return FAIL;
     index = operatorResult.increasedIndex;
     var operator = operatorResult.result;
-    var rightResult = tryParseExpression(index, tokens);
+    var rightResult = tryParseSimpleExpression(index, tokens);
     if (rightResult === FAIL)
         return FAIL;
     index = rightResult.increasedIndex;
@@ -144,17 +151,17 @@ function tryParseOperation(left, index, tokens) {
 function tryParseOperator(index, tokens) {
     if (index >= tokens.length)
         return FAIL;
-    if (!expectTokenType(tokens[index], 'control'))
+    if (!expectTokenType(tokens[index], 'control') && !expectTokenType(tokens[index], 'equals'))
         return FAIL;
     var nextToken = tokens[index++].content;
     if (index >= tokens.length)
         return FAIL;
     var overNextToken = tokens[index].content;
-    var singleCharOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ','];
-    var dualCharOperators = ['&&', '||'];
-    if (singleCharOperators.includes(nextToken))
+    var singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ',', '=='];
+    var dualTokenOperators = ['&&', '||'];
+    if (singleTokenOperators.includes(nextToken))
         return { increasedIndex: index, result: nextToken };
-    if (dualCharOperators.includes(nextToken + overNextToken))
+    if (dualTokenOperators.includes(nextToken + overNextToken))
         return { increasedIndex: index + 1, result: (nextToken + overNextToken) };
     return FAIL;
 }
@@ -171,42 +178,57 @@ function tryParseBraceExpression(index, tokens) {
         return FAIL;
     return { increasedIndex: index, result: parseExpressionResult.result };
 }
+function tryParseCondition(scope, index, tokens) {
+    if (index >= tokens.length)
+        return FAIL;
+    if (!expectToken(tokens[index++], '?'))
+        return FAIL;
+    var thenExpressionParseResult = tryParseSimpleExpression(index, tokens);
+    if (thenExpressionParseResult === FAIL)
+        return FAIL;
+    index = thenExpressionParseResult.increasedIndex;
+    if (index >= tokens.length)
+        return FAIL;
+    if (!expectToken(tokens[index++], ':'))
+        return FAIL;
+    var elseExpressionParseResult = tryParseSimpleExpression(index, tokens);
+    if (elseExpressionParseResult === FAIL)
+        return FAIL;
+    index = elseExpressionParseResult.increasedIndex;
+    return {
+        increasedIndex: index,
+        result: new condition_1.Condition(scope, thenExpressionParseResult.result, elseExpressionParseResult.result)
+    };
+}
 function tryParseExpression(index, tokens) {
     if (index >= tokens.length)
         return FAIL;
     var rootExpression = new Noop_1.Noop();
-    var braceExpressionResult = tryParseBraceExpression(index, tokens);
-    if (braceExpressionResult != FAIL) {
-        rootExpression = braceExpressionResult.result;
-        index = braceExpressionResult.increasedIndex;
-    }
-    else {
-        var arrayExpression = tryParseArray(index, tokens);
-        if (arrayExpression != FAIL) {
-            rootExpression = arrayExpression.result;
-            index = arrayExpression.increasedIndex;
-        }
-        else {
-            var simpleExpressionResult = tryParseSimpleExpression(index, tokens);
-            if (simpleExpressionResult == FAIL)
-                return FAIL;
-            rootExpression = simpleExpressionResult.result;
-            index = simpleExpressionResult.increasedIndex;
-        }
-    }
+    var simpleExpressionResult = tryParseSimpleExpression(index, tokens);
+    if (simpleExpressionResult == FAIL)
+        return FAIL;
+    rootExpression = simpleExpressionResult.result;
+    index = simpleExpressionResult.increasedIndex;
     while (true) {
         var functionExpressionResult = tryParseFunction(rootExpression, index, tokens);
-        if (functionExpressionResult === FAIL)
-            break;
-        rootExpression = functionExpressionResult.result;
-        index = functionExpressionResult.increasedIndex;
-    }
-    while (true) {
-        var operationExpressionResult = tryParseOperation(rootExpression, index, tokens);
-        if (operationExpressionResult === FAIL)
-            break;
-        rootExpression = operationExpressionResult.result;
-        index = operationExpressionResult.increasedIndex;
+        if (functionExpressionResult !== FAIL) {
+            rootExpression = functionExpressionResult.result;
+            index = functionExpressionResult.increasedIndex;
+        }
+        else {
+            var operationExpressionResult = tryParseOperation(rootExpression, index, tokens);
+            if (operationExpressionResult !== FAIL) {
+                rootExpression = operationExpressionResult.result;
+                index = operationExpressionResult.increasedIndex;
+            }
+            else {
+                var conditionExpressionResult = tryParseCondition(rootExpression, index, tokens);
+                if (conditionExpressionResult === FAIL)
+                    break;
+                rootExpression = conditionExpressionResult.result;
+                index = conditionExpressionResult.increasedIndex;
+            }
+        }
     }
     return { increasedIndex: index, result: rootExpression };
 }

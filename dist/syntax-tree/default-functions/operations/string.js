@@ -19,3 +19,9 @@ Operation_1.Operation.functions.push({
     operator: '+',
     eval: function (left, right) { return ({ type: 'string', value: left + right }); },
 });
+Operation_1.Operation.functions.push({
+    leftType: 'string',
+    rightType: 'string',
+    operator: '==',
+    eval: function (left, right) { return ({ type: 'boolean', value: left === right }); },
+});
