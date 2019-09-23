@@ -1,5 +1,6 @@
 import { Expression, IEvalResult } from './Expression';
+import { Functionality } from '../functionality';
 export declare class Noop extends Expression {
     constructor();
-    eval(): IEvalResult;
+    eval(functionality: Functionality): IEvalResult;
 }

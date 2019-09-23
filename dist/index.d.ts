@@ -1,4 +1,6 @@
 import './syntax-tree/default-functions';
 import { IEvalResult } from './syntax-tree/Expression';
-export declare function evaluateExpression(code: string): any;
-export declare function evaluateExpressionWithType(code: string): IEvalResult | null;
+import { Functionality } from './functionality';
+export declare function evaluateExpression(functionality: Functionality, code: string): any;
+export declare function evaluateExpressionWithType(functionality: Functionality, code: string): IEvalResult | null;
+export { Functionality };

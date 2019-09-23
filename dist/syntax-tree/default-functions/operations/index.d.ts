@@ -1,3 +1,2 @@
-import './number';
-import './string';
-import './boolean';
+import { Functionality } from '../../../functionality';
+export declare function addDefaults(functionality: Functionality): void;

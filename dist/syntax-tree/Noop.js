@@ -19,7 +19,7 @@ var Noop = /** @class */ (function (_super) {
     function Noop() {
         return _super.call(this) || this;
     }
-    Noop.prototype.eval = function () {
+    Noop.prototype.eval = function (functionality) {
         return {
             type: 'never',
             value: undefined,

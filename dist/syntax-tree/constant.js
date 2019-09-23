@@ -21,7 +21,7 @@ var NumberConstant = /** @class */ (function (_super) {
         _this.value = value;
         return _this;
     }
-    NumberConstant.prototype.eval = function () {
+    NumberConstant.prototype.eval = function (functionality) {
         return {
             type: 'number',
             value: this.value
@@ -37,7 +37,7 @@ var StringConstant = /** @class */ (function (_super) {
         _this.value = value;
         return _this;
     }
-    StringConstant.prototype.eval = function () {
+    StringConstant.prototype.eval = function (functionality) {
         return {
             type: 'string',
             value: this.value
@@ -53,7 +53,7 @@ var BooleanConstant = /** @class */ (function (_super) {
         _this.value = value;
         return _this;
     }
-    BooleanConstant.prototype.eval = function () {
+    BooleanConstant.prototype.eval = function (functionality) {
         return {
             type: 'boolean',
             value: this.value

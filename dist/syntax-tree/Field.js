@@ -21,9 +21,9 @@ var Field = /** @class */ (function (_super) {
         _this.name = name;
         return _this;
     }
-    Field.prototype.eval = function () {
+    Field.prototype.eval = function (functionality) {
         var _this = this;
-        var fn = Field.functions.find(function (x) { return x.name === _this.name; });
+        var fn = functionality.fields.find(function (x) { return x.name === _this.name; });
         if (!fn)
             throw new Error("No Field with identifier '" + this.name + "' found.");
         var result = fn.eval();
@@ -32,7 +32,6 @@ var Field = /** @class */ (function (_super) {
             value: result.value,
         };
     };
-    Field.functions = [];
     return Field;
 }(Expression_1.Expression));
 exports.Field = Field;

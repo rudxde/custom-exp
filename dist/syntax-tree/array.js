@@ -21,10 +21,10 @@ var Array = /** @class */ (function (_super) {
         _this.expressions = expressions;
         return _this;
     }
-    Array.prototype.eval = function () {
+    Array.prototype.eval = function (functionality) {
         return {
             type: 'array',
-            value: this.expressions.map(function (x) { return x.eval(); })
+            value: this.expressions.map(function (x) { return x.eval(functionality); })
         };
     };
     return Array;

@@ -23,13 +23,13 @@ var Operation = /** @class */ (function (_super) {
         _this.operator = operator;
         return _this;
     }
-    Operation.prototype.eval = function () {
+    Operation.prototype.eval = function (functionality) {
         var _this = this;
-        var leftResult = this.left.eval();
-        var rightResult = this.right.eval();
+        var leftResult = this.left.eval(functionality);
+        var rightResult = this.right.eval(functionality);
         var left = leftResult.value;
         var right = rightResult.value;
-        var fn = Operation.functions.find(function (x) { return x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === _this.operator; });
+        var fn = functionality.operations.find(function (x) { return x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === _this.operator; });
         if (!fn)
             throw new Error("No function found for operator '" + this.operator + "' for types '" + leftResult.type + "'X'" + rightResult.type + "'");
         var result = fn.eval(left, right);
@@ -38,7 +38,6 @@ var Operation = /** @class */ (function (_super) {
             value: result.value,
         };
     };
-    Operation.functions = [];
     return Operation;
 }(Expression_1.Expression));
 exports.Operation = Operation;

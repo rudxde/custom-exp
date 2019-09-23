@@ -1,10 +1,7 @@
 import { Expression, IEvalResult } from './Expression';
+import { Functionality } from '../functionality';
 export declare class Field extends Expression {
     name: string;
-    static functions: {
-        name: string;
-        eval: () => IEvalResult;
-    }[];
     constructor(name: string);
-    eval(): IEvalResult;
+    eval(functionality: Functionality): IEvalResult;
 }

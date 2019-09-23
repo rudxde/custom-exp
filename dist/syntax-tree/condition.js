@@ -23,17 +23,17 @@ var Condition = /** @class */ (function (_super) {
         _this.elseEx = elseEx;
         return _this;
     }
-    Condition.prototype.eval = function () {
-        var evalConditionResult = this.condition.eval();
+    Condition.prototype.eval = function (functionality) {
+        var evalConditionResult = this.condition.eval(functionality);
         var result = evalConditionResult.value;
         if (evalConditionResult.type !== 'boolean') {
             result = Boolean(evalConditionResult.value);
         }
         if (result) {
-            return this.thenEx.eval();
+            return this.thenEx.eval(functionality);
         }
         else {
-            return this.elseEx.eval();
+            return this.elseEx.eval(functionality);
         }
     };
     return Condition;

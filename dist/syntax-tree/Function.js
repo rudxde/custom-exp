@@ -23,10 +23,10 @@ var Function = /** @class */ (function (_super) {
         _this.parameter = parameter;
         return _this;
     }
-    Function.prototype.eval = function () {
+    Function.prototype.eval = function (functionality) {
         var _this = this;
-        var scopeResult = this.scope.eval();
-        var fn = Function.functions.find(function (x) { return x.name === _this.name && x.scopeType === scopeResult.type; });
+        var scopeResult = this.scope.eval(functionality);
+        var fn = functionality.functions.find(function (x) { return x.name === _this.name && x.scopeType === scopeResult.type; });
         if (!fn)
             throw new Error("Function " + this.name + " not found for type " + scopeResult.type);
         var result = fn.eval(scopeResult.value, this.parameter);
@@ -35,7 +35,6 @@ var Function = /** @class */ (function (_super) {
             value: result.value,
         };
     };
-    Function.functions = [];
     return Function;
 }(Expression_1.Expression));
 exports.Function = Function;
