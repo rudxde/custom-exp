@@ -22,10 +22,7 @@ var Field = /** @class */ (function (_super) {
         return _this;
     }
     Field.prototype.eval = function (functionality) {
-        var _this = this;
-        var fn = functionality.fields.find(function (x) { return x.name === _this.name; });
-        if (!fn)
-            throw new Error("No Field with identifier '" + this.name + "' found.");
+        var fn = functionality.getField(this.name);
         var result = fn.eval();
         return {
             type: result.type,

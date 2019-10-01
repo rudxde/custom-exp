@@ -24,14 +24,11 @@ var Operation = /** @class */ (function (_super) {
         return _this;
     }
     Operation.prototype.eval = function (functionality) {
-        var _this = this;
         var leftResult = this.left.eval(functionality);
         var rightResult = this.right.eval(functionality);
         var left = leftResult.value;
         var right = rightResult.value;
-        var fn = functionality.operations.find(function (x) { return x.leftType === leftResult.type && x.rightType === rightResult.type && x.operator === _this.operator; });
-        if (!fn)
-            throw new Error("No function found for operator '" + this.operator + "' for types '" + leftResult.type + "'X'" + rightResult.type + "'");
+        var fn = functionality.getOperation(leftResult.type, rightResult.type, this.operator);
         var result = fn.eval(left, right);
         return {
             type: result.type,

@@ -31,5 +31,11 @@ function addDefaults(functionality) {
         operator: '!=',
         eval: function (left, right) { return ({ type: 'boolean', value: left !== right }); },
     });
+    functionality.addOperation({
+        leftType: 'string',
+        rightType: 'string',
+        operator: '<',
+        eval: function (left, right) { return ({ type: 'boolean', value: left < right }); },
+    });
 }
 exports.addDefaults = addDefaults;

@@ -23,7 +23,7 @@ function addDefaults(functionality) {
     functionality.addOperation({
         leftType: 'boolean',
         rightType: 'boolean',
-        operator: '>',
+        operator: '->',
         eval: function (left, right) {
             return { type: 'boolean', value: (left && right) || !left };
         },
@@ -48,6 +48,24 @@ function addDefaults(functionality) {
         rightType: 'boolean',
         operator: '!=',
         eval: function (left, right) { return ({ type: 'boolean', value: left !== right }); },
+    });
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '<',
+        eval: function (left, right) { return ({ type: 'boolean', value: !left && right }); },
+    });
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '>',
+        eval: function (left, right) { return ({ type: 'boolean', value: left && !right }); },
+    });
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '°°',
+        eval: function (left, right) { return ({ type: 'string', value: '(◉ܫ◉)' }); },
     });
 }
 exports.addDefaults = addDefaults;

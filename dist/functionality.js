@@ -42,6 +42,24 @@ var Functionality = /** @class */ (function () {
             this.operations.push(a);
         }
     };
+    Functionality.prototype.getField = function (name) {
+        var result = this.fields.find(function (x) { return x.name === name; });
+        if (!result)
+            throw new Error("No Field with identifier '" + name + "' found.");
+        return result;
+    };
+    Functionality.prototype.getFunction = function (name, type) {
+        var result = this.functions.find(function (x) { return x.name === name && x.scopeType === type; });
+        if (!result)
+            throw new Error("Function " + name + " not found for type " + type);
+        return result;
+    };
+    Functionality.prototype.getOperation = function (leftType, rightType, operator) {
+        var result = this.operations.find(function (x) { return x.leftType === leftType && x.rightType === rightType && x.operator === operator; });
+        if (!result)
+            throw new Error("No function found for operator '" + operator + "' for types '" + leftType + "'X'" + rightType + "'");
+        return result;
+    };
     return Functionality;
 }());
 exports.Functionality = Functionality;

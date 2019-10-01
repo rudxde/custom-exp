@@ -4,4 +4,5 @@ export declare class Parameter {
     expression: Expression;
     constructor(expression: Expression);
     static getParam(functionality: Functionality, parameters: Parameter[], index: number, name: string, type?: string): IEvalResult;
+    static getOptionalParam(functionality: Functionality, parameters: Parameter[], index: number, name: string, type?: string): IEvalResult | undefined;
 }

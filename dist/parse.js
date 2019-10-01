@@ -10,6 +10,8 @@ var array_1 = require("./syntax-tree/array");
 var condition_1 = require("./syntax-tree/condition");
 var FAIL = null;
 function expectToken(token, expectedContent) {
+    if (token === undefined)
+        return false;
     return token.content === expectedContent;
 }
 function expectTokenType(token, expectedType) {
@@ -45,15 +47,52 @@ function tryParseString(index, tokens) {
     });
 }
 function tryParseNumber(index, tokens) {
+    if (index >= tokens.length)
+        return FAIL;
     if (!expectTokenType(tokens[index], 'other'))
         return FAIL;
     var value = tokens[index].content;
-    if (Number(value) === NaN)
-        return FAIL;
-    return ({
-        increasedIndex: index + 1,
-        result: new constant_1.NumberConstant(Number(value)),
-    });
+    if (value.startsWith('0x') || value.startsWith('0x')) {
+        var int = parseInt(value.substring(2), 16);
+        return ({
+            increasedIndex: index + 1,
+            result: new constant_1.NumberConstant(Number(int)),
+        });
+    }
+    else if (value.startsWith('0b') || value.startsWith('0b')) {
+        var int = parseInt(value.substring(2), 2);
+        return ({
+            increasedIndex: index + 1,
+            result: new constant_1.NumberConstant(Number(int)),
+        });
+    }
+    else {
+        if (isNaN(Number(value)))
+            return FAIL;
+        if (expectToken(tokens[index + 1], '.')) {
+            if (index + 2 >= tokens.length)
+                return FAIL;
+            var right = Number(tokens[index + 2].content);
+            if (isNaN(right)) {
+                right = 0;
+            }
+            else {
+                index += 2;
+            }
+            while (right >= 1)
+                right /= 10;
+            return ({
+                increasedIndex: index + 1,
+                result: new constant_1.NumberConstant(Number(value) + right),
+            });
+        }
+        else {
+            return ({
+                increasedIndex: index + 1,
+                result: new constant_1.NumberConstant(Number(value)),
+            });
+        }
+    }
 }
 function tryParseBoolean(index, tokens) {
     if (!expectTokenType(tokens[index], 'other'))
@@ -91,7 +130,7 @@ function tryParseArray(index, tokens) {
         index = expressionResult.increasedIndex;
         if (index >= tokens.length)
             return FAIL;
-        if (!expectToken(tokens[index], ':'))
+        if (!expectToken(tokens[index], ','))
             break;
         index++;
         if (index >= tokens.length)
@@ -117,12 +156,14 @@ function tryParseFunction(scope, index, tokens) {
     if (index < tokens.length && expectToken(tokens[index], '(')) {
         index++;
         while (true) {
+            if (expectToken(tokens[index], ')'))
+                break;
             var expressionResult = tryParseExpression(index, tokens);
             if (expressionResult === FAIL)
                 return FAIL;
             parameters.push(new Parameter_1.Parameter(expressionResult.result));
             index = expressionResult.increasedIndex;
-            if (!expectToken(tokens[index], ':'))
+            if (!expectToken(tokens[index], ','))
                 break;
             index++;
         }
@@ -148,21 +189,30 @@ function tryParseOperation(left, index, tokens) {
     var newOperation = new Operation_1.Operation(left, right, operator);
     return { increasedIndex: index, result: newOperation };
 }
+function crossProductSelf(array) {
+    var result = [];
+    array.forEach(function (x) {
+        array.forEach(function (y) {
+            result.push(x + y);
+        });
+    });
+    return result;
+}
 function tryParseOperator(index, tokens) {
     if (index >= tokens.length)
         return FAIL;
-    if (!expectTokenType(tokens[index], 'control') && !expectTokenType(tokens[index], 'equals'))
+    if (!expectTokenType(tokens[index], 'control'))
         return FAIL;
     var nextToken = tokens[index++].content;
     if (index >= tokens.length)
         return FAIL;
     var overNextToken = tokens[index].content;
-    var singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ',', '=='];
-    var dualTokenOperators = ['&&', '||', '!='];
-    if (singleTokenOperators.includes(nextToken))
-        return { increasedIndex: index, result: nextToken };
+    var singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', '==', '#', '|', '=', '&', '§', '\\', '~', '°', '!'];
+    var dualTokenOperators = crossProductSelf(singleTokenOperators);
     if (dualTokenOperators.includes(nextToken + overNextToken))
         return { increasedIndex: index + 1, result: (nextToken + overNextToken) };
+    if (singleTokenOperators.includes(nextToken))
+        return { increasedIndex: index, result: nextToken };
     return FAIL;
 }
 function tryParseBraceExpression(index, tokens) {

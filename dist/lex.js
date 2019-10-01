@@ -40,6 +40,9 @@ function Lex(code) {
                 break;
             case '.': // Fall trough
             case '$': // Fall trough
+            case '&': // Fall trough
+            case '§': // Fall trough
+            case '%': // Fall trough
             case '+': // Fall trough
             case '-': // Fall trough
             case '*': // Fall trough
@@ -63,6 +66,7 @@ function Lex(code) {
             case '<': // Fall trough
             case '>': // Fall trough
             case ',': // Fall trough
+            case '°': // Fall trough
             case '!':
                 result.push({ content: actualToken, type: 'other' });
                 result.push({ content: char, type: 'control' });
@@ -72,10 +76,10 @@ function Lex(code) {
                 result.push({ content: actualToken, type: 'other' });
                 if (code.charAt(i + 1) === '=') {
                     i++;
-                    result.push({ content: '==', type: 'equals' });
+                    result.push({ content: '==', type: 'control' });
                 }
                 else {
-                    result.push({ content: '=', type: 'assertion' });
+                    result.push({ content: '=', type: 'control' });
                 }
                 actualToken = '';
                 break;

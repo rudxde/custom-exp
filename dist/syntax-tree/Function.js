@@ -24,11 +24,8 @@ var Function = /** @class */ (function (_super) {
         return _this;
     }
     Function.prototype.eval = function (functionality) {
-        var _this = this;
         var scopeResult = this.scope.eval(functionality);
-        var fn = functionality.functions.find(function (x) { return x.name === _this.name && x.scopeType === scopeResult.type; });
-        if (!fn)
-            throw new Error("Function " + this.name + " not found for type " + scopeResult.type);
+        var fn = functionality.getFunction(this.name, scopeResult.type);
         var result = fn.eval(scopeResult.value, this.parameter);
         return {
             type: result.type,

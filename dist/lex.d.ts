@@ -1,4 +1,4 @@
-export declare type TokenTypes = 'string' | 'control' | 'assertion' | 'equals' | 'other';
+export declare type TokenTypes = 'string' | 'control' | 'other';
 export declare type Token = {
     content: string;
     type: TokenTypes;

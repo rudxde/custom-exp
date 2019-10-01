@@ -1,10 +1,10 @@
 import { Expression, IEvalResult } from './Expression';
 import { Functionality } from '../functionality';
-export declare type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==' | '!=';
+import { Operators } from './Operators';
 export declare class Operation extends Expression {
     left: Expression;
     right: Expression;
-    operator: Operator;
-    constructor(left: Expression, right: Expression, operator: Operator);
+    operator: Operators;
+    constructor(left: Expression, right: Expression, operator: Operators);
     eval(functionality: Functionality): IEvalResult;
 }

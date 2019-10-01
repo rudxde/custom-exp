@@ -1,6 +1,6 @@
 import { IEvalResult } from './syntax-tree/Expression';
-import { Operator } from './syntax-tree/Operation';
 import { Parameter } from './syntax-tree/Parameter';
+import { Operators } from './syntax-tree/Operators';
 declare type FieldType = {
     name: string;
     eval: () => IEvalResult;
@@ -8,7 +8,7 @@ declare type FieldType = {
 declare type OperationType = {
     leftType: string;
     rightType: string;
-    operator: Operator;
+    operator: Operators;
     eval: (leftResult: any, rightResult: any) => IEvalResult;
 };
 declare type FunctionType = {
@@ -24,5 +24,8 @@ export declare class Functionality {
     addField(a: FieldType): void;
     addFunctions(a: FunctionType): void;
     addOperation(a: OperationType): void;
+    getField(name: string): FieldType;
+    getFunction(name: string, type: string): FunctionType;
+    getOperation(leftType: string, rightType: string, operator: Operators): OperationType;
 }
 export {};
