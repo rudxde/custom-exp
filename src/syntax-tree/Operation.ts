@@ -1,6 +1,6 @@
 import { Expression, IEvalResult } from './Expression';
 import { Functionality } from '../functionality';
-export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | ',' | '==' | '!=';
+export type Operator = '+' | '-' | '*' | '/' | '%' | '<' | '>' | '&&' | '||' | '^' | '==' | '!=';
 export class Operation extends Expression {
     constructor(
         public left: Expression,

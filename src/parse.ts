@@ -50,12 +50,38 @@ function tryParseString(index: number, tokens: Tokens): canFail<StringConstant> 
 }
 function tryParseNumber(index: number, tokens: Tokens): canFail<NumberConstant> {
     if (!expectTokenType(tokens[index], 'other')) return FAIL;
-    const value = tokens[index].content;
-    if (Number(value) === NaN) return FAIL;
-    return ({
-        increasedIndex: index + 1,
-        result: new NumberConstant(Number(value)),
-    });
+    const value: string = tokens[index].content;
+    if (value.startsWith('0x') || value.startsWith('0x')) {
+        const int = parseInt(value.substring(2), 16);
+        return ({
+            increasedIndex: index + 1,
+            result: new NumberConstant(Number(int)),
+        });
+    } else if (value.startsWith('0b') || value.startsWith('0b')) {
+        const int = parseInt(value.substring(2), 2);
+        return ({
+            increasedIndex: index + 1,
+            result: new NumberConstant(Number(int)),
+        });
+    } else {
+        if (Number(value) === NaN) return FAIL;
+        if (expectToken(tokens[index + 1], '.')) {
+            index += 2;
+            let right = Number(tokens[index].content);
+            if(right === NaN) return FAIL;
+            while (right >= 1) right /= 10;
+            return ({
+                increasedIndex: index + 1,
+                result: new NumberConstant(Number(value) + right),
+            });
+        } else {
+            return ({
+                increasedIndex: index + 1,
+                result: new NumberConstant(Number(value)),
+            });
+        }
+    }
+    return FAIL;
 }
 function tryParseBoolean(index: number, tokens: Tokens): canFail<BooleanConstant> {
     if (!expectTokenType(tokens[index], 'other')) return FAIL;
@@ -87,7 +113,7 @@ function tryParseArray(index: number, tokens: Tokens): canFail<Array> {
         elements.push(expressionResult.result);
         index = expressionResult.increasedIndex;
         if (index >= tokens.length) return FAIL;
-        if (!expectToken(tokens[index], ':')) break;
+        if (!expectToken(tokens[index], ',')) break;
         index++;
         if (index >= tokens.length) return FAIL;
     }
@@ -108,11 +134,12 @@ function tryParseFunction(scope: Expression, index: number, tokens: Tokens): can
     if (index < tokens.length && expectToken(tokens[index], '(')) {
         index++;
         while (true) {
+            if (expectToken(tokens[index], ')')) break;
             const expressionResult = tryParseExpression(index, tokens);
             if (expressionResult === FAIL) return FAIL;
             parameters.push(new Parameter(expressionResult.result));
             index = expressionResult.increasedIndex;
-            if (!expectToken(tokens[index], ':')) break;
+            if (!expectToken(tokens[index], ',')) break;
             index++;
         }
         if (!expectToken(tokens[index++], ')')) return FAIL;
@@ -142,7 +169,7 @@ function tryParseOperator(index: number, tokens: Tokens): canFail<Operator> {
     const nextToken = tokens[index++].content;
     if (index >= tokens.length) return FAIL;
     const overNextToken = tokens[index].content;
-    const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', ',', '=='];
+    const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', '=='];
     const dualTokenOperators = ['&&', '||', '!='];
     if (singleTokenOperators.includes(nextToken)) return { increasedIndex: index, result: <Operator>nextToken };
     if (dualTokenOperators.includes(nextToken + overNextToken)) return { increasedIndex: index + 1, result: <Operator>(nextToken + overNextToken) };
