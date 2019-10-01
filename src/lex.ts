@@ -1,4 +1,4 @@
-export type TokenTypes = 'string' | 'control' | 'assertion' | 'equals' | 'other';
+export type TokenTypes = 'string' | 'control' | 'other';
 export type Token = { content: string, type: TokenTypes };
 export type Tokens = Token[];
 export function Lex(code: string): Tokens {
@@ -41,6 +41,9 @@ export function Lex(code: string): Tokens {
                 break;
             case '.': // Fall trough
             case '$': // Fall trough
+            case '&': // Fall trough
+            case '§': // Fall trough
+            case '%': // Fall trough
             case '+': // Fall trough
             case '-': // Fall trough
             case '*': // Fall trough
@@ -64,6 +67,7 @@ export function Lex(code: string): Tokens {
             case '<': // Fall trough
             case '>': // Fall trough
             case ',': // Fall trough
+            case '°': // Fall trough
             case '!':
                 result.push({ content: actualToken, type: 'other' });
                 result.push({ content: char, type: 'control' });
@@ -73,9 +77,9 @@ export function Lex(code: string): Tokens {
                 result.push({ content: actualToken, type: 'other' });
                 if (code.charAt(i + 1) === '=') {
                     i++;
-                    result.push({ content: '==', type: 'equals' });
+                    result.push({ content: '==', type: 'control' });
                 } else {
-                    result.push({ content: '=', type: 'assertion' });
+                    result.push({ content: '=', type: 'control' });
                 }
                 actualToken = '';
                 break;

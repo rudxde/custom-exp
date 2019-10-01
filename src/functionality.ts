@@ -1,7 +1,7 @@
 import { IEvalResult } from './syntax-tree/Expression';
-import { Operator } from './syntax-tree/Operation';
 import { Parameter } from './syntax-tree/Parameter';
 import { addDefaults } from './syntax-tree/default-functions';
+import { Operators } from './syntax-tree/Operators';
 type FieldType = {
     name: string;
     eval: () => IEvalResult;
@@ -10,7 +10,7 @@ type FieldType = {
 type OperationType = {
     leftType: string;
     rightType: string;
-    operator: Operator;
+    operator: Operators;
     eval: (leftResult: any, rightResult: any) => IEvalResult;
 };
 
@@ -59,5 +59,23 @@ export class Functionality {
         } else {
             this.operations.push(a);
         }
+    }
+
+    getField(name: string): FieldType {
+        const result = this.fields.find(x => x.name === name);
+        if (!result) throw new Error(`No Field with identifier '${name}' found.`);
+        return result;
+    }
+
+    getFunction(name: string, type: string): FunctionType {
+        const result = this.functions.find(x => x.name === name && x.scopeType === type);
+        if (!result) throw new Error(`Function ${name} not found for type ${type}`);
+        return result;
+    }
+
+    getOperation(leftType: string, rightType: string, operator: Operators): OperationType {
+        const result = this.operations.find(x => x.leftType === leftType && x.rightType === rightType && x.operator === operator);
+        if (!result) throw new Error(`No function found for operator '${operator}' for types '${leftType}'X'${rightType}'`);
+        return result;
     }
 }

@@ -23,7 +23,7 @@ export function addDefaults(functionality: Functionality): void {
     functionality.addOperation({
         leftType: 'boolean',
         rightType: 'boolean',
-        operator: '>',
+        operator: '->',
         eval: (left: boolean, right: boolean) => {
             return { type: 'boolean', value: (left && right) || !left };
         },
@@ -50,5 +50,22 @@ export function addDefaults(functionality: Functionality): void {
         operator: '!=',
         eval: (left, right) => ({ type: 'boolean', value: left !== right }),
     });
-
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '<',
+        eval: (left, right) => ({ type: 'boolean', value: !left && right }),
+    });
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '>',
+        eval: (left, right) => ({ type: 'boolean', value: left && !right }),
+    });
+    functionality.addOperation({
+        leftType: 'boolean',
+        rightType: 'boolean',
+        operator: '°°',
+        eval: (left, right) => ({ type: 'string', value: '(◉ܫ◉)' }),
+    });
 }

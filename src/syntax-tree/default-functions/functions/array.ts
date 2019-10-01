@@ -4,7 +4,6 @@ import { Functionality } from '../../../functionality';
 
 export function addDefaults(functionality: Functionality): void {
 
-
     functionality.addFunctions({
         name: 'toStringArray',
         scopeType: 'array',
@@ -60,9 +59,51 @@ export function addDefaults(functionality: Functionality): void {
         }
     });
     functionality.addFunctions({
+        name: 'length',
+        scopeType: 'array',
+        eval: (scope: IEvalResult[], parameters: Parameter[]) => {
+            return { type: 'number', value: scope.length };
+        }
+    });
+    functionality.addFunctions({
+        name: 'reverse',
+        scopeType: 'array',
+        eval: (scope: IEvalResult[], parameters: Parameter[]) => {
+            return { type: 'array', value: scope.reverse };
+        }
+    });
+    functionality.addFunctions({
+        name: 'slice',
+        scopeType: 'array',
+        eval: (scope: IEvalResult[], parameters: Parameter[]) => {
+            const start = Parameter.getParam(functionality, parameters, 0, 'start', 'number').value;
+            const end = Parameter.getParam(functionality, parameters, 1, 'end', 'number').value;
+            return { type: 'number', value: scope.slice(start, end) };
+        }
+    });
+    functionality.addFunctions({
         name: 'toGenericArray',
         scopeType: 'array',
         eval: (scope: IEvalResult[], parameters: Parameter[]) => ({ type: 'genericArray', value: scope.map(x => x.value) }),
+    });
+    functionality.addFunctions({
+        name: 'sort',
+        scopeType: 'array',
+        eval: (scope: IEvalResult[], parameters: Parameter[]) => {
+            const order = (Parameter.getOptionalParam(functionality, parameters, 0, 'order', 'string') || { type: 'string', value: 'asc' }).value;
+            const orderFactor = order === 'asc' ? 1 : -1;
+            const sorted = scope.sort((a, b) => {
+                const compareResult = functionality.getOperation(a.type, b.type, '<').eval(a.value, b.value);
+                if (compareResult.type === 'boolean') {
+                    return (compareResult.value ? 1 : -1) * orderFactor;
+                }
+                return -1;
+            });
+            return {
+                type: 'array',
+                value: sorted,
+            };
+        },
     });
 
 }

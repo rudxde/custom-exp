@@ -31,4 +31,10 @@ export function addDefaults(functionality: Functionality): void {
         operator: '!=',
         eval: (left, right) => ({ type: 'boolean', value: left !== right }),
     });
+    functionality.addOperation({
+        leftType: 'string',
+        rightType: 'string',
+        operator: '<',
+        eval: (left, right) => ({ type: 'boolean', value: left < right }),
+    });
 }

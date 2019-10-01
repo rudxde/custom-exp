@@ -17,4 +17,16 @@ export function addDefaults(functionality: Functionality): void {
             };
         }
     });
+    functionality.addOperation({
+        leftType: 'array',
+        rightType: 'array',
+        operator: '<',
+        eval: (left, right) => functionality.getOperation('number', 'number', '<').eval(left.length, right.length),
+    });
+    functionality.addOperation({
+        leftType: 'array',
+        rightType: 'array',
+        operator: '>',
+        eval: (left, right) => functionality.getOperation('number', 'number', '>').eval(left.length, right.length),
+    });
 }

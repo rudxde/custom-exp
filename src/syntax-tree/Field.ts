@@ -8,8 +8,7 @@ export class Field extends Expression {
         super();
     }
     eval(functionality: Functionality): IEvalResult {
-        const fn = functionality.fields.find(x => x.name === this.name);
-        if (!fn) throw new Error(`No Field with identifier '${this.name}' found.`);
+        const fn = functionality.getField(this.name);
         const result = fn.eval();
         return {
             type: result.type,

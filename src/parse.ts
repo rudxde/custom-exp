@@ -3,11 +3,12 @@ import { Field } from './syntax-tree/Field';
 import { Expression } from './syntax-tree/Expression';
 import { Function } from './syntax-tree/Function';
 import { Parameter } from './syntax-tree/Parameter';
-import { Operation, Operator } from './syntax-tree/Operation';
+import { Operation } from './syntax-tree/Operation';
 import { Noop } from './syntax-tree/Noop';
 import { StringConstant, NumberConstant, BooleanConstant } from './syntax-tree/constant';
 import { Array } from './syntax-tree/array';
 import { Condition } from './syntax-tree/condition';
+import { Operators } from './syntax-tree/Operators';
 
 type fail = null;
 type canFail<T> = fail | ParseResult<T>;
@@ -23,7 +24,6 @@ function expectToken(token: Token, expectedContent: string): boolean {
 function expectTokenType(token: Token, expectedType: TokenTypes): boolean {
     return token.type === expectedType;
 }
-
 
 function tryParseSimpleExpression(index: number, tokens: Tokens): canFail<Expression> {
     const braceExpressionResult = tryParseBraceExpression(index, tokens);
@@ -66,11 +66,11 @@ function tryParseNumber(index: number, tokens: Tokens): canFail<NumberConstant> 
             result: new NumberConstant(Number(int)),
         });
     } else {
-        if (Number(value) === NaN) return FAIL;
+        if (isNaN(Number(value))) return FAIL;
         if (expectToken(tokens[index + 1], '.')) {
             if (index + 2 >= tokens.length) return FAIL;
             let right = Number(tokens[index + 2].content);
-            if(isNaN(right)) {
+            if (isNaN(right)) {
                 right = 0;
             } else {
                 index += 2;
@@ -87,8 +87,8 @@ function tryParseNumber(index: number, tokens: Tokens): canFail<NumberConstant> 
             });
         }
     }
-    return FAIL;
 }
+
 function tryParseBoolean(index: number, tokens: Tokens): canFail<BooleanConstant> {
     if (!expectTokenType(tokens[index], 'other')) return FAIL;
     if (tokens[index].content !== 'true' && tokens[index].content !== 'false') return FAIL;
@@ -105,8 +105,6 @@ function tryParseField(index: number, tokens: Tokens): canFail<Field> {
     const newField = new Field(tokens[index++].content);
     return { result: newField, increasedIndex: index };
 }
-
-
 
 function tryParseArray(index: number, tokens: Tokens): canFail<Array> {
     if (index >= tokens.length) return FAIL;
@@ -130,10 +128,8 @@ function tryParseArray(index: number, tokens: Tokens): canFail<Array> {
 function tryParseFunction(scope: Expression, index: number, tokens: Tokens): canFail<Function> {
     if (index >= tokens.length) return FAIL;
     if (scope === FAIL) return FAIL;
-
     if (!expectToken(tokens[index++], '.')) return FAIL;
     if (index >= tokens.length) return FAIL;
-
     if (!expectTokenType(tokens[index], 'other')) return FAIL;
     const name = tokens[index++].content;
     let parameters: Parameter[] = [];
@@ -154,7 +150,6 @@ function tryParseFunction(scope: Expression, index: number, tokens: Tokens): can
     return { result: newFunction, increasedIndex: index };
 }
 
-
 function tryParseOperation(left: Expression, index: number, tokens: Tokens): canFail<Operation> {
     if (index >= tokens.length) return FAIL;
     const operatorResult = tryParseOperator(index, tokens);
@@ -168,20 +163,28 @@ function tryParseOperation(left: Expression, index: number, tokens: Tokens): can
     const newOperation = new Operation(left, right, operator);
     return { increasedIndex: index, result: newOperation };
 }
+function crossProductSelf(array: string[]): string[] {
+    const result: string[] = [];
+    array.forEach(x => {
+        array.forEach(y => {
+            result.push(x + y);
+        });
+    });
+    return result;
+}
 
-function tryParseOperator(index: number, tokens: Tokens): canFail<Operator> {
+function tryParseOperator(index: number, tokens: Tokens): canFail<Operators> {
     if (index >= tokens.length) return FAIL;
-    if (!expectTokenType(tokens[index], 'control') && !expectTokenType(tokens[index], 'equals')) return FAIL;
+    if (!expectTokenType(tokens[index], 'control')) return FAIL;
     const nextToken = tokens[index++].content;
     if (index >= tokens.length) return FAIL;
     const overNextToken = tokens[index].content;
-    const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', '=='];
-    const dualTokenOperators = ['&&', '||', '!='];
-    if (singleTokenOperators.includes(nextToken)) return { increasedIndex: index, result: <Operator>nextToken };
-    if (dualTokenOperators.includes(nextToken + overNextToken)) return { increasedIndex: index + 1, result: <Operator>(nextToken + overNextToken) };
+    const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', '==', '#', '|', '=', '&', '§', '\\', '~', '°', '!'];
+    const dualTokenOperators = crossProductSelf(singleTokenOperators);
+    if (dualTokenOperators.includes(nextToken + overNextToken)) return { increasedIndex: index + 1, result: <Operators>(nextToken + overNextToken) };
+    if (singleTokenOperators.includes(nextToken)) return { increasedIndex: index, result: <Operators>nextToken };
     return FAIL;
 }
-
 
 function tryParseBraceExpression(index: number, tokens: Tokens): canFail<Expression> {
     if (index >= tokens.length) return FAIL;
@@ -216,13 +219,11 @@ function tryParseCondition(scope: Expression, index: number, tokens: Tokens): ca
 
 export function tryParseExpression(index: number, tokens: Tokens): canFail<Expression> {
     if (index >= tokens.length) return FAIL;
-
     let rootExpression: Expression = new Noop();
     const simpleExpressionResult = tryParseSimpleExpression(index, tokens);
     if (simpleExpressionResult == FAIL) return FAIL;
     rootExpression = simpleExpressionResult.result;
     index = simpleExpressionResult.increasedIndex;
-
     while (true) {
         const functionExpressionResult = tryParseFunction(rootExpression, index, tokens);
         if (functionExpressionResult !== FAIL) {
