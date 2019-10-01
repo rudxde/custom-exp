@@ -4,7 +4,7 @@ import { Functionality } from '../../../functionality';
 
 export function addDefaults(functionality: Functionality): void {
 
-    
+
     functionality.addFunctions({
         name: 'toStringArray',
         scopeType: 'array',
@@ -58,6 +58,11 @@ export function addDefaults(functionality: Functionality): void {
             if (scope.length <= index.value) throw new Error(`Index out of bound! (${index.value}/${scope.length - 1})`);
             return { type: scope[index.value].type, value: scope[index.value].value };
         }
+    });
+    functionality.addFunctions({
+        name: 'toGenericArray',
+        scopeType: 'array',
+        eval: (scope: IEvalResult[], parameters: Parameter[]) => ({ type: 'genericArray', value: scope.map(x => x.value) }),
     });
 
 }
