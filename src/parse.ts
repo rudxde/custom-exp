@@ -10,16 +10,16 @@ import { Array } from './syntax-tree/array';
 import { Condition } from './syntax-tree/condition';
 
 type fail = null;
-type canFail<T> = fail | ParseResult<T>;
+export type canFail<T> = fail | ParseResult<T>;
 
-type ParseResult<T> = { result: T, increasedIndex: number };
+export type ParseResult<T> = { result: T, increasedIndex: number };
 
-const FAIL: fail = null;
+export const FAIL: fail = null;
 
-function expectToken(token: Token, expectedContent: string): boolean {
+export function expectToken(token: Token, expectedContent: string): boolean {
     return token.content === expectedContent;
 }
-function expectTokenType(token: Token, expectedType: TokenTypes): boolean {
+export function expectTokenType(token: Token, expectedType: TokenTypes): boolean {
     return token.type === expectedType;
 }
 

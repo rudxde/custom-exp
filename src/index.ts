@@ -3,6 +3,7 @@ import { tryParseExpression } from './parse';
 import './syntax-tree/default-functions';
 import { IEvalResult } from './syntax-tree/Expression';
 import { Functionality } from './functionality';
+import { Type } from './type';
 
 export function evaluateExpression(functionality: Functionality, code: string): any {
     const result = evaluateExpressionWithType(functionality, code);
@@ -18,3 +19,9 @@ export function evaluateExpressionWithType(functionality: Functionality, code: s
 }
 
 export { Functionality };
+
+
+// console.log(evaluateExpression(new Functionality(), '[1.2]'));
+
+
+console.log(Type.parseType('(a|b,array[c,d])'));
