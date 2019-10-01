@@ -1,6 +1,6 @@
 {
   "name": "simple-expression",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "evaluates expressions",
   "main": "dist/index",
   "types": "dist/index",
