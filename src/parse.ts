@@ -17,6 +17,7 @@ type ParseResult<T> = { result: T, increasedIndex: number };
 const FAIL: fail = null;
 
 function expectToken(token: Token, expectedContent: string): boolean {
+    if (token === undefined) return false;
     return token.content === expectedContent;
 }
 function expectTokenType(token: Token, expectedType: TokenTypes): boolean {
@@ -49,6 +50,7 @@ function tryParseString(index: number, tokens: Tokens): canFail<StringConstant> 
     });
 }
 function tryParseNumber(index: number, tokens: Tokens): canFail<NumberConstant> {
+    if (index >= tokens.length) return FAIL;
     if (!expectTokenType(tokens[index], 'other')) return FAIL;
     const value: string = tokens[index].content;
     if (value.startsWith('0x') || value.startsWith('0x')) {
@@ -66,9 +68,13 @@ function tryParseNumber(index: number, tokens: Tokens): canFail<NumberConstant> 
     } else {
         if (Number(value) === NaN) return FAIL;
         if (expectToken(tokens[index + 1], '.')) {
-            index += 2;
-            let right = Number(tokens[index].content);
-            if(right === NaN) return FAIL;
+            if (index + 2 >= tokens.length) return FAIL;
+            let right = Number(tokens[index + 2].content);
+            if(isNaN(right)) {
+                right = 0;
+            } else {
+                index += 2;
+            }
             while (right >= 1) right /= 10;
             return ({
                 increasedIndex: index + 1,
