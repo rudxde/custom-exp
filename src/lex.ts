@@ -1,6 +1,13 @@
 export type TokenTypes = 'string' | 'control' | 'other';
 export type Token = { content: string, type: TokenTypes };
 export type Tokens = Token[];
+/**
+ * Lexical analysis of the code in tokens.
+ *
+ * @export
+ * @param {string} code
+ * @returns {Tokens}
+ */
 export function Lex(code: string): Tokens {
     const result: Tokens = [];
     let actualToken: string = '';
