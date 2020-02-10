@@ -32,6 +32,7 @@ stages:
             pathtoPublish: '$(System.DefaultWorkingDirectory)'
             artifactName: drop
   - stage: version_update
+    dependsOn: Build_and_Test
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
     jobs:
       - job: versioning
@@ -48,23 +49,24 @@ stages:
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/patch'))
           inputs:
             command: 'custom'
-            customCommand: 'version patch'
+            customCommand: 'version patch -m "[skip ci] update version to %s"'
           displayName: 'increase patch version'
         - task: Npm@1
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/minor'))
           inputs:
             command: 'custom'
-            customCommand: 'version minor'
+            customCommand: 'version minor -m "[skip ci] update version to %s"'
           displayName: 'increase minor version'
         - task: Npm@1
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/major'))
           inputs:
             command: 'custom'
-            customCommand: 'version major'
+            customCommand: 'version major -m "[skip ci] update version to %s"'
           displayName: 'increase major version'
-        - script: "git push"
+        - script: "git push origin HEAD:$(Build.SourceBranch)"
           displayName: "push changes"
   - stage: Publish
+    dependsOn: Build_and_Test
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
     - deployment: npm_release
