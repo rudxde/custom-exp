@@ -1,15 +1,20 @@
 {
   "name": "custom-exp",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "evaluates expressions",
   "main": "dist/index",
   "types": "dist/index",
   "scripts": {
     "build": "tsc -p ."
   },
-  "author": "",
-  "license": "ISC",
+  "author": "rudxde",
+  "repository": "https://github.com/rudxde/custom-exp",
+  "bugs": "https://github.com/rudxde/custom-exp/issues",
   "dependencies": {
     "@types/node": "^12.7.5"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "Apache-2.0"
 }
