@@ -1,5 +1,5 @@
-import { Expression, IEvalResult } from './Expression';
-import { Parameter } from './Parameter';
+import { Expression, IEvalResult } from './expression';
+import { Parameter } from './parameter';
 import { Functionality } from '../functionality';
 
 export class Function extends Expression {

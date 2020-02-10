@@ -1,7 +1,7 @@
-import { IEvalResult } from './syntax-tree/Expression';
-import { Parameter } from './syntax-tree/Parameter';
+import { IEvalResult } from './syntax-tree/expression';
+import { Parameter } from './syntax-tree/parameter';
 import { addDefaults } from './syntax-tree/default-functions';
-import { Operators } from './syntax-tree/Operators';
+import { Operators } from './syntax-tree/operators';
 type FieldType = {
     /**
      * Name of the field. The name is without the '$' prefix. The prefix ('$') needs to be added in the expression, to select the field.

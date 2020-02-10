@@ -1,5 +1,5 @@
 import { Functionality } from '../../..';
-import { IEvalResult } from '../../Expression';
+import { IEvalResult } from '../../expression';
 
 export function addDefaults(functionality: Functionality): void {
     // concat array

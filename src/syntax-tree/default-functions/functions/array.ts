@@ -1,5 +1,5 @@
-import { Parameter } from '../../Parameter';
-import { IEvalResult } from '../../Expression';
+import { Parameter } from '../../parameter';
+import { IEvalResult } from '../../expression';
 import { Functionality } from '../../../functionality';
 
 export function addDefaults(functionality: Functionality): void {

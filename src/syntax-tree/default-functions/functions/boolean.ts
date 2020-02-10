@@ -1,4 +1,4 @@
-import { Parameter } from '../../Parameter';
+import { Parameter } from '../../parameter';
 import { Functionality } from '../../../functionality';
 export function addDefaults(functionality: Functionality): void {
 
