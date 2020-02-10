@@ -49,21 +49,22 @@ stages:
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/patch'))
           inputs:
             command: 'custom'
-            customCommand: 'version patch -m "[skip ci] update version to %s"'
+            customCommand: 'version patch -m "update version to %s"'
           displayName: 'increase patch version'
         - task: Npm@1
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/minor'))
           inputs:
             command: 'custom'
-            customCommand: 'version minor -m "[skip ci] update version to %s"'
+            customCommand: 'version minor -m "update version to %s"'
           displayName: 'increase minor version'
         - task: Npm@1
           condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/major'))
           inputs:
             command: 'custom'
-            customCommand: 'version major -m "[skip ci] update version to %s"'
+            customCommand: 'version major -m "update version to %s"'
           displayName: 'increase major version'
         - script: "git push origin HEAD:$(Build.SourceBranch)"
+          condition: and(succeeded(), not(startsWith(variables['Build.SourceVersionMessage'], 'update version to ')))
           displayName: "push changes"
   - stage: Publish
     dependsOn: Build_and_Test
