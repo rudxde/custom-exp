@@ -1,14 +1,14 @@
 import { Tokens, Token, TokenTypes } from './lex';
-import { Field } from './syntax-tree/Field';
-import { Expression } from './syntax-tree/Expression';
-import { Function } from './syntax-tree/Function';
-import { Parameter } from './syntax-tree/Parameter';
-import { Operation } from './syntax-tree/Operation';
-import { Noop } from './syntax-tree/Noop';
+import { Field } from './syntax-tree/field';
+import { Expression } from './syntax-tree/expression';
+import { Function } from './syntax-tree/function';
+import { Parameter } from './syntax-tree/parameter';
+import { Operation } from './syntax-tree/operation';
+import { Noop } from './syntax-tree/noop';
 import { StringConstant, NumberConstant, BooleanConstant } from './syntax-tree/constant';
 import { Array } from './syntax-tree/array';
 import { Condition } from './syntax-tree/condition';
-import { Operators } from './syntax-tree/Operators';
+import { Operators } from './syntax-tree/operators';
 
 type fail = null;
 type canFail<T> = fail | ParseResult<T>;

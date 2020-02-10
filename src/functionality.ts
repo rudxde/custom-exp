@@ -1,7 +1,7 @@
-import { IEvalResult } from './syntax-tree/Expression';
-import { Parameter } from './syntax-tree/Parameter';
+import { IEvalResult } from './syntax-tree/expression';
+import { Parameter } from './syntax-tree/parameter';
 import { addDefaults } from './syntax-tree/default-functions';
-import { Operators } from './syntax-tree/Operators';
+import { Operators } from './syntax-tree/operators';
 type FieldType = {
     name: string;
     eval: () => IEvalResult;

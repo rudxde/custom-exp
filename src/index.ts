@@ -1,7 +1,7 @@
 import { Lex } from './lex';
 import { tryParseExpression } from './parse';
 import './syntax-tree/default-functions';
-import { IEvalResult } from './syntax-tree/Expression';
+import { IEvalResult } from './syntax-tree/expression';
 import { Functionality } from './functionality';
 
 export function evaluateExpression(functionality: Functionality, code: string): any {

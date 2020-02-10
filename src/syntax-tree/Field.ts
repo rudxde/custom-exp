@@ -1,4 +1,4 @@
-import { Expression, IEvalResult } from './Expression';
+import { Expression, IEvalResult } from './expression';
 import { Functionality } from '../functionality';
 
 export class Field extends Expression {

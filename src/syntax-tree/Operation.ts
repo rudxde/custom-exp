@@ -1,6 +1,6 @@
-import { Expression, IEvalResult } from './Expression';
+import { Expression, IEvalResult } from './expression';
 import { Functionality } from '../functionality';
-import { Operators } from './Operators';
+import { Operators } from './operators';
 export class Operation extends Expression {
     constructor(
         public left: Expression,
