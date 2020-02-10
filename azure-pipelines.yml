@@ -78,6 +78,21 @@ stages:
             pool:
               vmImage: 'ubuntu-latest'
             steps:
+            - checkout: self
+              clean: true
+            - task: NodeTool@0
+              inputs:
+                versionSpec: '12.x'
+              displayName: 'Install Node.js'
+            - task: Npm@1
+              inputs:
+                command: 'ci'
+              displayName: 'Install packages'
+            - task: Npm@1
+              inputs:
+                command: 'custom'
+                customCommand: 'run build'
+              displayName: 'Build'
             - task: Npm@1
               inputs:
                 command: 'publish'
