@@ -13,7 +13,7 @@ export class Operation extends Expression {
         const leftResult = this.left.eval(functionality);
         const rightResult = this.right.eval(functionality);
         const left = leftResult.value;
-        let right = rightResult.value;
+        const right = rightResult.value;
         const fn = functionality.getOperation(leftResult.type,  rightResult.type, this.operator);
         const result = fn.eval(left, right);
         return {
