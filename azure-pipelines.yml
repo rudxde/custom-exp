@@ -78,6 +78,8 @@ stages:
             pool:
               vmImage: 'ubuntu-latest'
             steps:
+            - checkout: self
+              clean: true
             - task: NodeTool@0
               inputs:
                 versionSpec: '12.x'
