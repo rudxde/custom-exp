@@ -36,3 +36,5 @@ export function evaluateExpressionWithType(functionality: Functionality, code: s
 }
 
 export { Functionality };
+export { IEvalResult } from './syntax-tree/expression';
+export { Parameter } from './syntax-tree/parameter';
