@@ -14,9 +14,14 @@ import { Functionality } from './functionality';
  */
 export function evaluateExpression(functionality: Functionality, code: string): any {
     const result = evaluateExpressionWithType(functionality, code);
-    return result ? result.value : null;
+    return deType(result);
 }
 
+function deType(result: IEvalResult | null): any {
+    if (result?.type !== 'array') return result ? result.value : null;
+    const deTypeArray: (IEvalResult | null)[] = result.value;
+    return deTypeArray.map(x => deType(x));
+}
 
 /**
  * Like @see{evaluateExpression}, but returns, type, value tuple.
