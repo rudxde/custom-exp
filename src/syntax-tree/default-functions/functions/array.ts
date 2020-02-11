@@ -69,7 +69,7 @@ export function addDefaults(functionality: Functionality): void {
         name: 'reverse',
         scopeType: 'array',
         eval: (scope: IEvalResult[], parameters: Parameter[]) => {
-            return { type: 'array', value: scope.reverse };
+            return { type: 'array', value: scope.reverse() };
         }
     });
     functionality.addFunctions({
@@ -78,7 +78,7 @@ export function addDefaults(functionality: Functionality): void {
         eval: (scope: IEvalResult[], parameters: Parameter[]) => {
             const start = Parameter.getParam(functionality, parameters, 0, 'start', 'number').value;
             const end = Parameter.getParam(functionality, parameters, 1, 'end', 'number').value;
-            return { type: 'number', value: scope.slice(start, end) };
+            return { type: 'array', value: scope.slice(start, end) };
         }
     });
     functionality.addFunctions({

@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - '*'
+  branches:
+    include:
+      - '*'
   
 stages:
   - stage: Build_and_Test
@@ -26,11 +28,21 @@ stages:
             command: 'custom'
             customCommand: 'run build'
           displayName: 'Build'
+        - task: Npm@1
+          inputs:
+            command: 'custom'
+            customCommand: 'run test:coverage'
+          displayName: 'Test'
         - task: PublishBuildArtifacts@1
           condition: always()
           inputs:
-            pathtoPublish: '$(System.DefaultWorkingDirectory)'
-            artifactName: drop
+            pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/'
+            artifactName: build
+        - task: PublishBuildArtifacts@1
+          condition: always()
+          inputs:
+            pathtoPublish: '$(System.DefaultWorkingDirectory)/.nyc_output/'
+            artifactName: nyc_report
   - stage: version_update
     dependsOn: Build_and_Test
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
@@ -93,8 +105,10 @@ stages:
                 command: 'custom'
                 customCommand: 'run build'
               displayName: 'Build'
+            - script: cp package.json dist/package.json
             - task: Npm@1
               inputs:
                 command: 'publish'
+                workingDir: '/dist'
                 publishEndpoint: 'NpmJs'
               displayName: 'Publish on npm'
