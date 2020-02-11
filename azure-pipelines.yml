@@ -34,8 +34,13 @@ stages:
         - task: PublishBuildArtifacts@1
           condition: always()
           inputs:
-            pathtoPublish: '$(System.DefaultWorkingDirectory)'
-            artifactName: drop
+            pathtoPublish: '$(System.DefaultWorkingDirectory)/dist/'
+            artifactName: build
+        - task: PublishBuildArtifacts@1
+          condition: always()
+          inputs:
+            pathtoPublish: '$(System.DefaultWorkingDirectory)/.nyc_output/'
+            artifactName: nyc_report
   - stage: version_update
     dependsOn: Build_and_Test
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
