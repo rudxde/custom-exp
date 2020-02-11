@@ -26,6 +26,11 @@ stages:
             command: 'custom'
             customCommand: 'run build'
           displayName: 'Build'
+        - task: Npm@1
+          inputs:
+            command: 'custom'
+            customCommand: 'run test:coverage'
+          displayName: 'Test'
         - task: PublishBuildArtifacts@1
           condition: always()
           inputs:
