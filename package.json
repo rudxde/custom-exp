@@ -5,13 +5,22 @@
   "main": "dist/index",
   "types": "dist/index",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json",
+    "test:coverage": "ts-node node_modules/nyc/bin/nyc.js npm rum test"
   },
   "author": "rudxde",
   "repository": "https://github.com/rudxde/custom-exp",
   "bugs": "https://github.com/rudxde/custom-exp/issues",
   "dependencies": {
     "@types/node": "^12.7.5"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.5.3",
+    "@types/node": "^13.7.0",
+    "jasmine": "^3.5.0",
+    "nyc": "^15.0.0",
+    "typescript": "^3.7.5"
   },
   "publishConfig": {
     "access": "public"
