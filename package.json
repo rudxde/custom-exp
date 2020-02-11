@@ -2,8 +2,8 @@
   "name": "custom-exp",
   "version": "1.1.3",
   "description": "evaluates expressions",
-  "main": "dist/index",
-  "types": "dist/index",
+  "main": "index",
+  "types": "index",
   "scripts": {
     "build": "tsc -p .",
     "test": "ts-node -P ./tsconfig.test.json node_modules/jasmine/bin/jasmine --config=jasmine.json",

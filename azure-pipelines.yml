@@ -105,8 +105,10 @@ stages:
                 command: 'custom'
                 customCommand: 'run build'
               displayName: 'Build'
+            - script: cp package.json dist/package.json
             - task: Npm@1
               inputs:
                 command: 'publish'
+                workingDir: '/dist'
                 publishEndpoint: 'NpmJs'
               displayName: 'Publish on npm'
