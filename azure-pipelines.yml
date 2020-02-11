@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - '*'
+  branches:
+    include:
+      - '*'
   
 stages:
   - stage: Build_and_Test
