@@ -111,15 +111,17 @@ function tryParseArray(index: number, tokens: Tokens): canFail<Array> {
     if (!expectToken(tokens[index++], '[')) return FAIL;
     if (index >= tokens.length) return FAIL;
     const elements: Expression[] = [];
-    while (true) {
-        const expressionResult = tryParseExpression(index, tokens);
-        if (expressionResult === FAIL) return FAIL;
-        elements.push(expressionResult.result);
-        index = expressionResult.increasedIndex;
-        if (index >= tokens.length) return FAIL;
-        if (!expectToken(tokens[index], ',')) break;
-        index++;
-        if (index >= tokens.length) return FAIL;
+    if (!expectToken(tokens[index], ']')) {
+        while (true) {
+            const expressionResult = tryParseExpression(index, tokens);
+            if (expressionResult === FAIL) return FAIL;
+            elements.push(expressionResult.result);
+            index = expressionResult.increasedIndex;
+            if (index >= tokens.length) return FAIL;
+            if (!expectToken(tokens[index], ',')) break;
+            index++;
+            if (index >= tokens.length) return FAIL;
+        }
     }
     if (!expectToken(tokens[index++], ']')) return FAIL;
     return { result: new Array(elements), increasedIndex: index };
