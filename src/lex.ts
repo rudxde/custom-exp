@@ -36,7 +36,7 @@ export function Lex(code: string): Tokens {
                             actualToken = '';
                             i--;
                             break;
-                        default:  // Fall trough
+                        default:
                             actualToken += stringChar;
                             break;
                     }
@@ -95,5 +95,5 @@ export function Lex(code: string): Tokens {
         }
     }
     result.push({ content: actualToken, type: 'other' });
-    return result.filter(x => x.content);
+    return result.filter(x => x.type === 'string' || x.content);
 }
