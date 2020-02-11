@@ -109,6 +109,6 @@ stages:
             - task: Npm@1
               inputs:
                 command: 'publish'
-                workingDir: '/dist'
+                workingDir: '$(System.DefaultWorkingDirectory)/dist/'
                 publishEndpoint: 'NpmJs'
               displayName: 'Publish on npm'
