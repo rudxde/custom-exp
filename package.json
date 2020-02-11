@@ -12,9 +12,7 @@
   "author": "rudxde",
   "repository": "https://github.com/rudxde/custom-exp",
   "bugs": "https://github.com/rudxde/custom-exp/issues",
-  "dependencies": {
-    "@types/node": "^12.7.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jasmine": "^3.5.3",
     "@types/node": "^13.7.0",
