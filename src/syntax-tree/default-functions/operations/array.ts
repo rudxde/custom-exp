@@ -13,9 +13,9 @@ export function addDefaults(functionality: Functionality): void {
                 value: [
                     ...left,
                     ...right,
-                ]
+                ],
             };
-        }
+        },
     });
     functionality.addOperation({
         leftType: 'array',

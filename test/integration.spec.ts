@@ -143,7 +143,7 @@ describe('Custom-exp', () => {
                 name: 'foo',
                 eval: () => ({
                     value: 'FOO',
-                    type: 'string'
+                    type: 'string',
                 }),
             });
             const result = evaluateExpression(functionality, `$foo`);
@@ -154,7 +154,7 @@ describe('Custom-exp', () => {
                 name: 'bar',
                 eval: () => ({
                     value: 'BAR',
-                    type: 'string'
+                    type: 'string',
                 }),
             });
             const result = evaluateExpression(functionality, `$foo + $bar`);
@@ -173,7 +173,7 @@ describe('Custom-exp', () => {
                         type: 'number',
                         value: result,
                     };
-                }
+                },
             });
             const result = evaluateExpression(functionality, `3.factorial`);
             expect(result).toEqual(6);

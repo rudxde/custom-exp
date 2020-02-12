@@ -6,7 +6,7 @@ functionality.addField({
     name: 'foo',
     eval: () => ({
         value: 'FOO',
-        type: 'string'
+        type: 'string',
     }),
 });
 
@@ -14,7 +14,7 @@ functionality.addField({
     name: 'bar',
     eval: () => ({
         value: 'BAR',
-        type: 'string'
+        type: 'string',
     }),
 });
 
@@ -22,7 +22,7 @@ functionality.addField({
     name: 'numbers',
     eval: () => ({
         value: '1,2,3,4,5',
-        type: 'string'
+        type: 'string',
     }),
 });
 
@@ -38,7 +38,7 @@ functionality.addFunctions({
             type: 'number',
             value: result,
         };
-    }
+    },
 });
 
 functionality.addOperation({

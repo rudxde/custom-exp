@@ -13,7 +13,7 @@ import { Operators } from './syntax-tree/operators';
 type fail = null;
 type canFail<T> = fail | ParseResult<T>;
 
-type ParseResult<T> = { result: T, increasedIndex: number };
+type ParseResult<T> = { result: T; increasedIndex: number };
 
 const FAIL: fail = null;
 
@@ -215,7 +215,7 @@ function tryParseCondition(scope: Expression, index: number, tokens: Tokens): ca
             scope,
             thenExpressionParseResult.result,
             elseExpressionParseResult.result,
-        )
+        ),
     };
 }
 
