@@ -14,9 +14,9 @@ export function addDefaults(functionality: Functionality): void {
                     const convertFn = functionality.functions.find(x => x.name === 'toString' && x.scopeType === element.type);
                     if (!convertFn) throw new Error(`Function 'toString' not found for type ${element.type}`);
                     return convertFn.eval(element.value, []);
-                })
+                }),
             };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'toString',
@@ -28,9 +28,9 @@ export function addDefaults(functionality: Functionality): void {
                     const convertFn = functionality.functions.find(x => x.name === 'toString' && x.scopeType === element.type);
                     if (!convertFn) throw new Error(`Function 'toString' not found for type ${element.type}`);
                     return convertFn.eval(element.value, []).value;
-                }).join(', ') + ']'
+                }).join(', ') + ']',
             };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'join',
@@ -46,7 +46,7 @@ export function addDefaults(functionality: Functionality): void {
                     return convertFn.eval(element.value, []).value;
                 }).join(separator.value),
             };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'get',
@@ -56,21 +56,21 @@ export function addDefaults(functionality: Functionality): void {
             if (index.type !== 'number') throw new Error('Wrong type for parameter index of get. Expected number but got ' + index.type);
             if (scope.length <= index.value) throw new Error(`Index out of bound! (${index.value}/${scope.length - 1})`);
             return { type: scope[index.value].type, value: scope[index.value].value };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'length',
         scopeType: 'array',
         eval: (scope: IEvalResult[], parameters: Parameter[]) => {
             return { type: 'number', value: scope.length };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'reverse',
         scopeType: 'array',
         eval: (scope: IEvalResult[], parameters: Parameter[]) => {
             return { type: 'array', value: scope.reverse() };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'slice',
@@ -79,7 +79,7 @@ export function addDefaults(functionality: Functionality): void {
             const start = Parameter.getParam(functionality, parameters, 0, 'start', 'number').value;
             const end = Parameter.getParam(functionality, parameters, 1, 'end', 'number').value;
             return { type: 'array', value: scope.slice(start, end) };
-        }
+        },
     });
     functionality.addFunctions({
         name: 'toGenericArray',

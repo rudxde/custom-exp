@@ -4,7 +4,7 @@ import { Functionality } from '../functionality';
 export class Parameter {
 
     constructor(
-        public expression: Expression
+        public expression: Expression,
     ) {
 
     }

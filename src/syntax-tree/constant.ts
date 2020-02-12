@@ -10,7 +10,7 @@ export class NumberConstant extends Expression {
     eval(functionality: Functionality): IEvalResult {
         return {
             type: 'number',
-            value: this.value
+            value: this.value,
         };
     }
 }
@@ -23,7 +23,7 @@ export class StringConstant extends Expression {
     eval(functionality: Functionality): IEvalResult {
         return {
             type: 'string',
-            value: this.value
+            value: this.value,
         };
     }
 }
@@ -36,7 +36,7 @@ export class BooleanConstant extends Expression {
     eval(functionality: Functionality): IEvalResult {
         return {
             type: 'boolean',
-            value: this.value
+            value: this.value,
         };
     }
 }
