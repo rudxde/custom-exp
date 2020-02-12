@@ -31,6 +31,11 @@ stages:
         - task: Npm@1
           inputs:
             command: 'custom'
+            customCommand: 'run lint'
+          displayName: 'Lint'
+        - task: Npm@1
+          inputs:
+            command: 'custom'
             customCommand: 'run test:coverage'
           displayName: 'Test'
         - task: PublishBuildArtifacts@1
