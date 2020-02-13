@@ -110,7 +110,10 @@ stages:
                 command: 'custom'
                 customCommand: 'run build'
               displayName: 'Build'
-            - script: cp package.json dist/package.json
+            - script: |
+                cp package.json dist/package.json
+                cp readme.md dist/readme.md
+              displayName: 'copy readme.md & package.json'
             - task: Npm@1
               inputs:
                 command: 'publish'
