@@ -6,6 +6,12 @@ It is built on a simple pattern of 3 components.:
 - functions
 - operations
 
+## Installation
+
+```
+npm i --save custom-exp
+```
+
 ## Start:
 ```ts
 import { Functionality, evaluateExpression } from 'custom-exp';
