@@ -103,7 +103,7 @@ export class Functionality {
         const existingIndex = this.operations.findIndex(x =>
             x.operator === a.operator
             && x.leftType === a.leftType
-            && x.rightType === a.rightType
+            && x.rightType === a.rightType,
         );
         if (existingIndex !== -1) {
             this.operations[existingIndex] = a;

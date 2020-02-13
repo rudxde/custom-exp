@@ -10,7 +10,7 @@ export class Array extends Expression {
     eval(functionality: Functionality): IEvalResult {
         return {
             type: 'array',
-            value: this.expressions.map(x => x.eval(functionality))
+            value: this.expressions.map(x => x.eval(functionality)),
         };
     }
 }
