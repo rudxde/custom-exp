@@ -183,7 +183,9 @@ function tryParseOperator(index: number, tokens: Tokens): canFail<Operators> {
     const overNextToken = tokens[index].content;
     const singleTokenOperators = ['+', '-', '*', '/', '%', '<', '>', '^', '==', '#', '|', '=', '&', '§', '\\', '~', '°', '!'];
     const dualTokenOperators = crossProductSelf(singleTokenOperators);
-    if (dualTokenOperators.includes(nextToken + overNextToken)) return { increasedIndex: index + 1, result: <Operators>(nextToken + overNextToken) };
+    if (dualTokenOperators.includes(nextToken + overNextToken) && tokens[index].type === 'control') {
+        return { increasedIndex: index + 1, result: <Operators>(nextToken + overNextToken) };
+    }
     if (singleTokenOperators.includes(nextToken)) return { increasedIndex: index, result: <Operators>nextToken };
     return FAIL;
 }
